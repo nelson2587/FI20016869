@@ -1,1 +1,167 @@
 
+using System;
+
+namespace SumasNaturales.App
+{
+    internal static class Program
+    {
+        // Valores por defecto
+        private const int DEFAULT_REC_CAP = 12000;   // límite seguro para pruebas de recursión
+        private const int QUICK_MAX       = 2_000_000; // tope en modo rápido
+
+        static void Main(string[] args)
+        {
+            // Flags CLI
+            bool quick = false;            // --quick => usa QUICK_MAX
+            bool skipDescIte = false;      // --skip-desc-ite => omite estrategia descendente con SumIte
+            bool skipRec = false;          // --skip-rec => omite SumRec
+            int recCap = DEFAULT_REC_CAP;  // --rec-max N => tope recursivo
+
+            // Parseo simple
+            for (int i = 0; i < args.Length; i++)
+            {
+                switch (args[i])
+                {
+                    case "--quick":
+                        quick = true; break;
+                    case "--skip-desc-ite":
+                        skipDescIte = true; break;
+                    case "--skip-rec":
+                        skipRec = true; break;
+                    case "--rec-max":
+                        if (i + 1 < args.Length && int.TryParse(args[i + 1], out var val) && val > 0)
+                        {
+                            recCap = val;
+                            i++;
+                        }
+                        else
+                        {
+                            Console.WriteLine("⚠️  --rec-max requiere un entero positivo. Usando valor por defecto.");
+                        }
+                        break;
+                }
+            }
+
+            int Max = quick ? QUICK_MAX : int.MaxValue;
+
+            // ---- SumFor ----
+            var ascFor  = AscendenteUltimoValido(SumFor, Max);
+            var descFor = DescendentePrimerValido(SumFor, Max);
+
+            // ---- SumIte ----
+            var ascIte  = AscendenteUltimoValido(SumIte, Max);
+            (int n, int sum) descIte = (0, 0);
+            if (!skipDescIte)
+            {
+                descIte = DescendentePrimerValido(SumIte, Max); // OJO: esto es muy costoso sin --quick
+            }
+
+            Console.WriteLine("• SumFor:");
+            Console.WriteLine($"        ◦ From 1 to Max → n: {ascFor.n} → sum: {ascFor.sum}");
+            Console.WriteLine($"        ◦ From Max to 1 → n: {descFor.n} → sum: {descFor.sum}");
+            Console.WriteLine();
+
+            Console.WriteLine("• SumIte:");
+            Console.WriteLine($"        ◦ From 1 to Max → n: {ascIte.n} → sum: {ascIte.sum}");
+            if (skipDescIte)
+                Console.WriteLine($"        ◦ From Max to 1 → (omitido con --skip-desc-ite)");
+            else
+                Console.WriteLine($"        ◦ From Max to 1 → n: {descIte.n} → sum: {descIte.sum}");
+            Console.WriteLine();
+
+            // ---- SumRec opcional (con límite de seguridad) ----
+            if (!skipRec)
+            {
+                Console.WriteLine("• SumRec (con límite de seguridad para evitar StackOverflow):");
+                Console.WriteLine($"        ◦ Aviso: ejecutando sólo hasta {recCap} (usa --rec-max N para ajustar).");
+
+                var ascRec  = AscendenteUltimoValido(SumRec, recCap);
+                var descRec = DescendentePrimerValido(SumRec, recCap);
+
+                Console.WriteLine($"        ◦ From 1 to {recCap} → n: {ascRec.n} → sum: {ascRec.sum}");
+                Console.WriteLine($"        ◦ From {recCap} to 1 → n: {descRec.n} → sum: {descRec.sum}");
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine("• SumRec: (omitido con --skip-rec)\n");
+            }
+
+            // Tip útil si no ves salida al ejecutar el .exe con doble clic
+            // Console.WriteLine("Presione ENTER para salir...");
+            // Console.ReadLine();
+        }
+
+        // =========================
+        // Métodos requeridos
+        // =========================
+
+        // SumFor: n * (n + 1) / 2 (ingenua, en unchecked, sin validaciones internas, solo int)
+        static int SumFor(int n)
+        {
+            unchecked
+            {
+                return (n * (n + 1)) / 2;
+            }
+        }
+
+        // SumIte: iterativa equivalente a SumRec (en unchecked, sin validaciones internas)
+        static int SumIte(int n)
+        {
+            int acc = 0;
+            unchecked
+            {
+                for (int i = 1; i <= n; i++)
+                    acc += i;
+            }
+            return acc;
+        }
+
+        // SumRec exacta al enunciado (en unchecked, sin validaciones internas)
+        static int SumRec(int n)
+        {
+            unchecked
+            {
+                return n > 1 ? n + SumRec(n - 1) : n;
+            }
+        }
+
+        // =========================
+        // Estrategias de búsqueda
+        // =========================
+
+        // Ascendente: 1..max -> detener al primer inválido; reportar el último válido (sum > 0)
+        static (int n, int sum) AscendenteUltimoValido(Func<int, int> f, int max)
+        {
+            int lastN = 0;
+            int lastSum = 0;
+
+            for (int n = 1; n <= max; n++)
+            {
+                int s = f(n);
+                if (s > 0)
+                {
+                    lastN = n;
+                    lastSum = s;
+                }
+                else
+                {
+                    break; // primer inválido → devolvemos el último válido
+                }
+            }
+            return (lastN, lastSum);
+        }
+
+        // Descendente: max..1 -> detener al primer válido y reportarlo (sum > 0)
+        static (int n, int sum) DescendentePrimerValido(Func<int, int> f, int max)
+        {
+            for (int n = max; n >= 1; n--)
+            {
+                int s = f(n);
+                if (s > 0)
+                    return (n, s);
+            }
+            return (0, 0);
+        }
+    }
+}
