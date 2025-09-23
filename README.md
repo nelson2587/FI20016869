@@ -138,11 +138,14 @@ static (int n, int sum) DescendentePrimerValido(Func<int,int> f, int max)
 
 ## 🧪 Ejemplos de ejecución
 ```bash
-# Tope moderado (seguro)
-dotnet run -- 100000
 
-# Tope alto (probable overflow en int)
-dotnet run -- 2000000
+dotnet run --project SumasNaturales.App -- 100000
+
+
+dotnet run --project SumasNaturales.App -- 2000000
+
+dotnet run --project SumasNaturales.App -- --quick 
+dotnet run --project SumasNaturales.App -- --skip-desc-ite
 ```
 
 ---
