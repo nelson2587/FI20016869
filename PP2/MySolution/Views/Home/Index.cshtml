@@ -1,8 +1,142 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model MyProject.Models.BinaryPageViewModel
+@{
+    ViewData["Title"] = "Operaciones binarias y cambio de bases";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row justify-content-center">
+  <div class="col-lg-10 col-xl-8">
+
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-primary text-white">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-sliders2"></i>
+          <strong>Ingresar valores binarios</strong>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="alert alert-info small" role="alert">
+          <i class="bi bi-info-circle"></i>
+          Reglas: solo <code>0</code>/<code>1</code>, largo &gt; 0, ≤ 8 y múltiplo de 2 (2,4,6,8). Los valores se muestran con 8 bits.
+        </div>
+
+        <form asp-action="Index" method="post" class="row g-3">
+          @Html.AntiForgeryToken()
+
+          <div class="col-md-6">
+            <label asp-for="Input.A" class="form-label fw-semibold">Operando a</label>
+            <div class="input-group">
+              <span class="input-group-text">a</span>
+              <input asp-for="Input.A" class="form-control" placeholder="p.ej. 1010, 0101, 1111" />
+            </div>
+            <span class="text-danger small">@Html.ValidationMessageFor(m => m.Input.A)</span>
+          </div>
+
+          <div class="col-md-6">
+            <label asp-for="Input.B" class="form-label fw-semibold">Operando b</label>
+            <div class="input-group">
+              <span class="input-group-text">b</span>
+              <input asp-for="Input.B" class="form-control" placeholder="p.ej. 11, 0000, 010101" />
+            </div>
+            <span class="text-danger small">@Html.ValidationMessageFor(m => m.Input.B)</span>
+          </div>
+
+          <div class="col-12 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-cpu"></i> Calcular
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary">
+              <i class="bi bi-arrow-counterclockwise"></i> Limpiar
+            </a>
+          </div>
+
+          <div class="col-12">
+            @Html.ValidationSummary(false, "", new { @class = "text-danger small" })
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    @if (Model.Results is not null)
+    {
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-success text-white">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-table"></i>
+            <strong>Resultados</strong>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle pretty-table">
+              <thead>
+                <tr>
+                  <th style="width:180px">Ítem</th>
+                  <th><span class="badge text-bg-secondary">BIN</span></th>
+                  <th><span class="badge text-bg-secondary">OCT</span></th>
+                  <th><span class="badge text-bg-secondary">DEC</span></th>
+                  <th><span class="badge text-bg-secondary">HEX</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>a</code></td>
+                  <td><code class="mono">@Model.Results.A.Bin</code></td>
+                  <td class="mono">@Model.Results.A.Oct</td>
+                  <td class="mono">@Model.Results.A.Dec</td>
+                  <td class="mono">@Model.Results.A.Hex</td>
+                </tr>
+                <tr>
+                  <td><code>b</code></td>
+                  <td><code class="mono">@Model.Results.B.Bin</code></td>
+                  <td class="mono">@Model.Results.B.Oct</td>
+                  <td class="mono">@Model.Results.B.Dec</td>
+                  <td class="mono">@Model.Results.B.Hex</td>
+                </tr>
+                <tr>
+                  <td><code>a Y b</code></td>
+                  <td><code class="mono">@Model.Results.And.Bin</code></td>
+                  <td class="mono">@Model.Results.And.Oct</td>
+                  <td class="mono">@Model.Results.And.Dec</td>
+                  <td class="mono">@Model.Results.And.Hex</td>
+                </tr>
+                <tr>
+                  <td><code>a O b</code></td>
+                  <td><code class="mono">@Model.Results.Or.Bin</code></td>
+                  <td class="mono">@Model.Results.Or.Oct</td>
+                  <td class="mono">@Model.Results.Or.Dec</td>
+                  <td class="mono">@Model.Results.Or.Hex</td>
+                </tr>
+                <tr>
+                  <td><code>a XOR b</code></td>
+                  <td><code class="mono">@Model.Results.Xor.Bin</code></td>
+                  <td class="mono">@Model.Results.Xor.Oct</td>
+                  <td class="mono">@Model.Results.Xor.Dec</td>
+                  <td class="mono">@Model.Results.Xor.Hex</td>
+                </tr>
+                <tr class="table-group-divider table-secondary">
+                  <td><code>a + b</code></td>
+                  <td><code class="mono">@Model.Results.Sum.Bin</code></td>
+                  <td class="mono">@Model.Results.Sum.Oct</td>
+                  <td class="mono">@Model.Results.Sum.Dec</td>
+                  <td class="mono">@Model.Results.Sum.Hex</td>
+                </tr>
+                <tr class="table-secondary">
+                  <td><code>a • b</code></td>
+                  <td><code class="mono">@Model.Results.Product.Bin</code></td>
+                  <td class="mono">@Model.Results.Product.Oct</td>
+                  <td class="mono">@Model.Results.Product.Dec</td>
+                  <td class="mono">@Model.Results.Product.Hex</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="small text-body-secondary">
+            <i class="bi bi-lightbulb"></i> Tip: En modo oscuro la tabla usa un contraste suave para lectura de binarios.
+          </div>
+        </div>
+      </div>
+    }
+  </div>
 </div>

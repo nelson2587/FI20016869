@@ -1,31 +1,20 @@
-html {
-  font-size: 14px;
-}
+/* Fuente mono para valores numéricos */
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+/* Navbar según tema */
+[data-bs-theme="light"] .navbar { background: #f8f9fa; }
+[data-bs-theme="dark"]  .navbar { background: #1f2937; }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
+/* Card header sutil en claro/oscuro */
+.card-header { border-bottom: 0; }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
+/* Tabla más cómoda de leer */
+.pretty-table thead th { position: sticky; top: 0; background: var(--tbl-head-bg, transparent); z-index: 1; }
+[data-bs-theme="light"] .pretty-table thead th { --tbl-head-bg: #f8f9fa; }
+[data-bs-theme="dark"]  .pretty-table thead th { --tbl-head-bg: #111827; }
 
-body {
-  margin-bottom: 60px;
-}
+.pretty-table tbody td { vertical-align: middle; }
+.pretty-table code { font-weight: 600; }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}
+/* Botón tema pequeñito */
+#themeToggle { border-radius: 999px; }

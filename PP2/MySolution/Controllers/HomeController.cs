@@ -1,31 +1,32 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using MySolution.Models;
+using MyProject.Models;
+using MyProject.Services;
 
 namespace MySolution.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly BinaryService _svc = new();
 
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
+    [HttpGet]
     public IActionResult Index()
     {
-        return View();
+        return View(new BinaryPageViewModel { Input = new BinaryInput() });
     }
 
-    public IActionResult Privacy()
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Index(BinaryInput input)
     {
-        return View();
-    }
+        var vm = new BinaryPageViewModel { Input = input };
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        if (!ModelState.IsValid)
+        {
+            // Muestra el formulario con mensajes de error
+            return View(vm);
+        }
+
+        vm.Results = _svc.Compute(input.A, input.B);
+        return View(vm);
     }
 }
