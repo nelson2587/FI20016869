@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nelson\\OneDrive - Universidad Fidélitas\\Escritorio\\FI20016869\\MySolution\\MySolution.csproj",
+      "projectUniqueName": "C:\\Users\\nelson\\OneDrive - Universidad Fidélitas\\Escritorio\\FI20016869\\PP2\\MySolution\\MySolution.csproj",
       "projectName": "MySolution",
-      "projectPath": "C:\\Users\\nelson\\OneDrive - Universidad Fidélitas\\Escritorio\\FI20016869\\MySolution\\MySolution.csproj",
+      "projectPath": "C:\\Users\\nelson\\OneDrive - Universidad Fidélitas\\Escritorio\\FI20016869\\PP2\\MySolution\\MySolution.csproj",
       "packagesPath": "C:\\Users\\nelson\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nelson\\OneDrive - Universidad Fidélitas\\Escritorio\\FI20016869\\MySolution\\obj\\",
+      "outputPath": "C:\\Users\\nelson\\OneDrive - Universidad Fidélitas\\Escritorio\\FI20016869\\PP2\\MySolution\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
