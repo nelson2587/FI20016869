@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using MyProject.Models;
-using MyProject.Services;
+using MySolution.Models;
+using MySolution.Services;
 
 namespace MySolution.Controllers;
 
