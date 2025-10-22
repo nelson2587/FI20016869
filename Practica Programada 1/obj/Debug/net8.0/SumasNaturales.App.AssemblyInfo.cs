@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SumasNaturales.App")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+51c680939acd1d4482685d280b8ce14a2f94a80b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73fbbd2993a5e25aca64b48d92ae4a3391a10f23")]
 [assembly: System.Reflection.AssemblyProductAttribute("SumasNaturales.App")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SumasNaturales.App")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
